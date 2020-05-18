@@ -230,7 +230,265 @@ function(friends) {
 new
 Person('Mike').myFriends6(friends);
 */
-
+/*
 ///////////////////////////////////
 // Destructuring
+
+// convenient way to extract data from a data structure like an object or an array
+
+//ES5
+//var john = ['John', 26];
+//var name = john[0];
+//var age = john[1];
+
+//ES6
+const [name, age] = ['John', 26];
+console.log(name);
+console.log(age);
+
+const obj = {
+    firstName: 'John',
+    lastName: 'Smith'
+};
+
+const {firstName, lastName} = obj;
+console.log(firstName);
+console.log(lastName);
+
+// example below if we dont want key names to match
+const {firstName: a, lastName: b} = obj;
+console.log(a);
+console.log(b);
+
+// more destructuring and returning multiple values
+function calcAgeRetirement(year) {
+    const age2 = new Date().getFullYear() - year;
+    return [age, 65 - age];
+}
+
+const [age2, retirement] = calcAgeRetirement(1990);
+console.log(age);
+console.log(retirement);
+*/
+
+/////////////////////////////////////////////
+// Arrays
+// uses html example
+/*
+const boxes = document.querySelectorAll('.box');  // returns Node list
+
+// ES5  to select all boxes and make them blue
+/*
+var boxesArr5 = Array.prototype.slice.call(boxes);
+boxesArr5.forEach(function(cur) {
+    cur.style.backgroundColor = 'dodgerblue';
+});
+*/
+/*
+// ES6 the new 'from' method transforms the Node list automatically to an array. 
+const boxesArr6 = Array.from(boxes);
+Array.from(boxes).forEach(cur => cur.style.backgroundColor = 'dodgerblue');
+
+// looping over arrays (to change the text in the boxes)
+// ES5
+/*
+for(var i = 0; i < boxesArr5.length; i++) {
+
+    if(boxesArr5[i].className === 'box blue') {
+        continue; 
+    }
+    boxesArr5[i].textContent = 'I changed to blue!';
+}
+*/
+/*
+// ES6  has new loop called 'for of'
+for (const cur of boxesArr6) {
+    if(cur.className.includes('blue')) {
+        continue; 
+    }
+    cur.textContent = 'I changed to blue!';
+}
+*/
+/*
+// new array methods to find elements in an array
+//
+// ES5
+var ages = [12, 17, 8, 21, 14, 11];
+
+var fullAge = ages.map(function(cur) {
+    return cur >= 18;
+});
+console.log(fullAge);
+
+console.log(fullAge.indexOf(true)); // to find the index 
+console.log(ages[fullAge.indexOf(true)]); // to get the age
+
+//ES6 
+//has new methods of 'findIndex' and 'find'
+console.log(ages.findIndex(cur => cur >= 18));
+console.log(ages.find(cur => cur >= 18));
+*/
+/*
+///////////////////////////////////////////////
+// Spread operators   *Used in the function call*
+
+function addFourAges(a, b, c, d) {
+    return a + b + c + d;
+}
+var sum1 = addFourAges(18, 30, 12, 21);
+console.log(sum1);
+
+// how to pass that entire array into a function
+//ES5
+var ages = [18, 30, 12, 21];
+var sum2 = addFourAges.apply(null, ages); 
+console.log(sum2);
+
+// ES6  introduces spread operator '...', it expands the array
+const sum3 = addFourAges(...ages);
+console.log(sum3);
+
+// ES6 spread operator, another use case is joining arrays
+const familySmith = ['John', 'Jane', 'Mark'];
+const familyMiller = ['Mary', 'Bob', 'Ann'];
+const bigFamily = [...familySmith, 'Lily', ...familyMiller];
+console.log(bigFamily);
+
+// also works on Node lists
+
+const h = document.querySelector('h1');
+const boxes = document.querySelectorAll('.box');
+const all = [h, ...boxes]; //gets us node list
+
+Array.from(all).forEach(cur => cur.style.color = 'purple');
+*/
+
+//////////////////////////////////////////////
+//  Rest parameters - allows one to pass an arbitray number of arguments into a function. 
+// look same as spread operator, but works the oposite. *Used in the function declaration*
+
+/* ES5  without rest parameters
+function isFullAge5() {
+    //console.log(arguments); // does not return an array, but an object that needs to be converted to array
+    var argsArr = Array.prototype.slice.call(arguments); // need to convert to an array
+
+    argsArr.forEach(function(cur) {
+        console.log((2016 - cur) >= 18);
+    })
+}
+
+isFullAge5(1990, 1999, 1965); 
+isFullAge5(1990, 1999, 1965, 2016, 1987); 
+*/
+/*
+//ES6 introduces rest parameters
+function isFullAge6(...years) {
+    //console.log(years); // returns an array which is better than the object in es5
+    years.forEach(cur => console.log((2016 - cur) >= 18));
+} 
+
+isFullAge6(1990, 1999, 1965, 2016, 1987);
+*/
+/*
+// take a step further
+// ES5  without rest parameters
+function isFullAge5(limit) {
+    //console.log(arguments);
+    var argsArr = Array.prototype.slice.call(arguments, 1); // need to convert to an array
+
+    argsArr.forEach(function(cur) {
+        console.log((2016 - cur) >= limit);
+    })
+}
+
+isFullAge5(21, 1990, 1999, 1965); //first argument is limit
+//isFullAge5(1990, 1999, 1965, 2016, 1987); 
+
+
+function isFullAge6(limit, ...years) {
+    //console.log(years); // returns an array which is better than the object in es5
+    years.forEach(cur => console.log((2016 - cur) >= limit));
+} 
+
+isFullAge6(16, 1990, 1999, 1965, 2016, 1987); // first argument is limit
+*/
+
+////////////////////////////////////////
+// Default parameters
+// used when you want to set one or more parameters to be preset as a default
+/*
+// ES5 before default parameters
+function SmithPerson(firstName, yearOfBirth, lastName, nationality) {
+
+    lastName === undefined ? lastName = 'Smith' : lastName = lastName;  // using ES5 to preset parameters 
+    nationality === undefined ? nationality = 'american' : nationality = nationality;
+
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+}
+var john = new SmithPerson('John', 1990);
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'spanish'); // able to override parameters. this case emily got married.
+*/
+// ES6 using default parameters
+/*
+function SmithPerson(firstName, yearOfBirth, lastName = 'Smith', nationality = 'american') { // specify default parameters right where they are declared
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+}
+
+var john = new SmithPerson('John', 1990);
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'spanish');
+*/
+
+/////////////////////////////////////////////////
+// Maps  Map completely new for ES6
+// map is a new key value data structure, anything can be used for a key, strings, numbers, booleans, functions, ect... Maps are iterable(able to loop through)
+// use .set .get .has and clear to manipulate maps
+/*
+const question = new Map();
+question.set('question', 'What is the official name of the latest major JavaScript version?'); // key, value
+question.set(1, 'ES5');
+question.set(2, 'ES6');
+question.set(3, 'ES2015');
+question.set(4, 'ES7');
+question.set('correct', 3);
+question.set(true, 'Correct answer :D');
+question.set(false, 'Wrong, please try again!');
+
+console.log(question.get('question'));
+//console.log(question.size); // to get length
+
+//question.delete(4); // to delete using key
+
+if(question.has(4)) { // or use in if statement
+//    question.delete(4); 
+    //console.log('Answer 4 is here');
+}
+
+//question.clear(); // clear everything from map
+/*
+// looping through maps using forEach
+question.forEach((value, key) => 
+console.log(`This is ${key}, and it's set to ${value}`));
+*/
+/*
+// using for of
+for (let [key, value] of question.entries()) {
+//console.log(`This is ${key}, and it's set to ${value}`);
+    if (typeof(key) === 'number') {
+        console.log(`Answer ${key}: ${value}`);
+    }
+}
+
+const ans = parseInt(prompt('Write the correct answer')); // parseInt returns a number NOT a string
+console.log(question.get(ans === question.get('correct')));
+*/
+
+//////////////////////////////////////////
+// Classes
+
 
