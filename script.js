@@ -490,5 +490,218 @@ console.log(question.get(ans === question.get('correct')));
 
 //////////////////////////////////////////
 // Classes
+// for prototypal inheiritance. Classes make it easier to implement iheiritance and create objects based on blueprints
+/*
+//ES5  uses function constructors
+var Person5 = function(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
 
+Person5.prototype.calculateAge = function() {
+    var age = new Date().getFullYear - this.yearOfBirth;
+    console.log(age);
+}
+
+var john5 = new Person5('John', 1990, 'teacher');
+
+// Same thing but using classes with ES6 
+class Person6 {    // Class declaration
+    // constructor
+    constructor (name, yearOfBirth, job) {      
+        this.name = name;                       // same as before  
+        this.yearOfBirth = yearOfBirth;         // same as before
+        this.job = job;                         // same as before
+    }                       // no need for separating puctuation
+    // method
+    calculateAge() {        // no need declare function
+        var age = new Date().getFullYear - this.yearOfBirth;    // same as before
+        console.log(age);                                     
+    }
+
+    static greeting() {
+        console.log('Hey there!');
+    }
+}
+
+const john6 = new Person6('John', 1990, 'teacher');
+Person6.greeting();
+*/
+/////////////////////////////////////////////////////
+// Classes and subclasses
+/*
+//ES5  
+var Person5 = function(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
+
+Person5.prototype.calculateAge = function() {
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+}
+
+var Athlete5 = function(name, yearOfBirth, job, olymicGames, medals) {
+    Person5.call(this, name, yearOfBirth, job);
+    this.olymicGames = olymicGames;
+    this.medals = medals;    
+}
+
+Athlete5.prototype = Object.create(Person5.prototype);
+
+Athlete5.prototype.wonMedal = function() {
+    this.medals++;
+    console.log(this.medals);
+}
+
+var johnAthlete5 = new Athlete5('John', 1990, 'swimmer', 3, 10);
+
+johnAthlete5.calculateAge();
+johnAthlete5.wonMedal();
+*/
+/*
+// Same thing but using classes with ES6 
+class Person6 {    // Class declaration
+    // constructor
+    constructor (name, yearOfBirth, job) {      
+        this.name = name;                       // same as before  
+        this.yearOfBirth = yearOfBirth;         // same as before
+        this.job = job;                         // same as before
+    }                       // no need for separating puctuation
+    // method
+    calculateAge() {        // no need declare function
+        var age = new Date().getFullYear() - this.yearOfBirth;    // same as before
+        console.log(age);                                     
+    }
+}
+
+class Athlete6 extends Person6 {
+    constructor(name, yearOfBirth, job, olympicGames, medals) {
+        super(name, yearOfBirth, job);
+        this.olympicGames =  olympicGames;
+        this.medals = medals;
+    }
+
+    wonMedal() {
+        this.medals++;
+        console.log(this.medals);
+    }
+}
+
+const johnAthlete6 = new Athlete6('John', 1990, 'swimmer', 3, 10);
+
+johnAthlete6.calculateAge();
+johnAthlete6.wonMedal();
+*/
+/////////////////////////////////////////////////////
+// Coding challenge
+
+/////////////////////////////////
+// CODING CHALLENGE
+
+/*
+
+Suppose that you're working in a small town administration, and you're in charge of two town elements:
+1. Parks
+2. Streets
+
+It's a very small town, so right now there are only 3 parks and 4 streets. All parks and streets have a name and a build year.
+
+At an end-of-year meeting, your boss wants a final report with the following:
+1. Tree density of each park in the town (forumla: number of trees/park area)
+2. Average age of each town's park (forumla: sum of all ages/number of parks)
+3. The name of the park that has more than 1000 trees
+4. Total and average length of the town's streets
+5. Size classification of all streets: tiny/small/normal/big/huge. If the size is unknown, the default is normal
+
+All the report data should be printed to the console.
+
+HINT: Use some of the ES6 features: classes, subclasses, template strings, default parameters, maps, arrow functions, destructuring, etc.
+*/
+/*
+class Element {
+    constructor(name, buildYear) {
+        this.name = name;
+        this.buildYear = buildYear;
+    }
+}
+
+
+class Park extends Element {
+    constructor(name, buildYear, area, numTrees) {
+        super(name, buildYear);
+        this.area = area;
+        this.numTrees = numTrees;
+    }
+
+    treeDensity() {
+        const density = this.numTrees / this.area;
+        console.log(`${this.name} has a tree density of ${density} trees per sq km.`);
+    }
+}
+
+class Street extends Element {
+    constructor(name, buildYear, length, size = 3) {   // setting normal street default parameter
+        super(name, buildYear);
+        this.length = length;
+        this.size = size;
+    }
+
+    classifyStreet() {
+        const classification = new Map();
+        classification.set(1, 'tiny');
+        classification.set(2, 'small');
+        classification.set(3, 'normal');
+        classification.set(4, 'big');
+        classification.set(5, 'huge');
+        console.log(`${this.name}, built in ${this.buildYear}, is a ${classification.get(this.size)} street.`);
+    }
+}
+
+const allParks = [new Park('Green Park', 1987, 0.2, 215),
+                new Park('National Park', 1894, 2.9, 3541),
+                new Park('Oak Park', 1953, 0.4, 949)];
+
+const allStreets = [new Street('Ocean Ave', 1999, 1.1, 4),
+                    new Street('Evergreen St', 2008, 2.7, 2),
+                    new Street('4th St', 2015, .08),
+                    new Street('Sunset Blvd', 1982, 2.5, 5)];
+
+function calc(arr) {
+
+    const sum = arr.reduce((prev, cur, index) => prev + cur, 0); /* 0 is place to start. Using .reduce(reduces arrays to one figure) Adds everything in the array in order. Using just prev, and cur, but typed out index to show that exists as an option. */
+    return [sum, sum / arr.length];
+}
+
+function reportParks(p) {
+    console.log('------PARKS REPORT------');
+
+    // Density
+    p.forEach(el => el.treeDensity());
+    // Average age
+    const ages = p.map(el => new Date().getFullYear() - el.buildYear);
+    const [totalAge, avgAge] = calc(ages);
+    console.log(`Our ${p.length} parks have an average of ${avgAge} years.`);
+
+    // which park has more than a thousand trees
+    const i = p.map(el => el.numTrees).findIndex(el => el >= 1000);
+    console.log(`${p[i].name} has more than 1000 trees.`);
+}
+
+function reportStreets(s) {
+    console.log('------STREETS REPORT------');
+    // total and average length of the towns streets
+    const [totalLength, avgLength] = calc(s.map(el => el.length));
+    console.log(`Our ${s.length} streets have a total length of ${totalLength}km, with an average of ${avgLength}km.`)
+    // classify sizes
+    s.forEach(el => el.classifyStreet());
+
+
+}
+
+reportParks(allParks);
+reportStreets(allStreets);
+*/
 
